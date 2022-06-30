@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+
+<robot name="sensor_model">
+  
+    <link name="base_link"> 
+        <visual>
+            <origin xyz="0 0 0.3" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.2" length="0.6"/>
+            </geometry>
+            
+        </visual> 
+        <collision>
+            <origin xyz="0 0 0.3" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.2" length="0.6"/>
+            </geometry>
+        </collision>  
+        <inertial>
+            <mass value="10"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+
+    </link>
+
+    <joint name="base_link_2_link1" type="fixed">
+        <parent link="base_link"/>
+        <child link="link1"/>
+        <origin xyz="0 0 1.0"/>
+    </joint>
+
+    <link name="link1">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <mass value="0.1"/>
+            <inertia ixx="0.000166667" ixy="0.0" ixz="0.0" iyy="0.000166667" iyz="0.0" izz="0.000166667"/>
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <!-- https://classic.gazebosim.org/tutorials?tut=ros_gzplugins#Pluginsavailableingazebo_plugins -->
+
+
+    <!-- single camera -->
+    <!-- <gazebo reference="link1">
+        <sensor type="camera" name="camera1">
+            <update_rate>30.0</update_rate>
+            <camera name="head">
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>800</width>
+                    <height>800</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so"> 
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <cameraName>rrbot/camera1</cameraName>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                <frameName>link1</frameName>
+                <hackBaseline>0.07</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2>
+            </plugin>
+        </sensor>
+    </gazebo> -->
+
+
+    <!-- Multi camera/stero camera -->
+    <!-- <gazebo reference="link1">
+        <sensor type="multicamera" name="stero_camera">
+            <update_rate>30</update_rate>
+            <camera name="left">
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>800</width>
+                    <height>800</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+            </camera>
+
+            <camera name="right">
+                <pose>0 -0.07 0 0 0 0</pose>
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>800</width>
+                    <height>800</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+            </camera>
+
+            <plugin name="stereo_camera_controller" filename="libgazebo_ros_multicamera.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <cameraName>stero_camera/camera</cameraName>
+                <imageTopicName>stero_camera/image_raw</imageTopicName>
+                <cameraInfoTopicName>stero_camera/camera_info</cameraInfoTopicName>
+                <frameName>link1</frameName>
+                <hackBaseline>0.07</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2>
+            </plugin>
+        </sensor>
+    </gazebo> -->
+    
+    
+    <!-- RGBD deapth camera/kinect camera -->
+    <!-- <gazebo reference="link1">
+        <sensor name="depth_kinect_camera" type="depth">
+            <update_rate>20</update_rate>
+            <camera>
+                <horizontal_fov>1.047198</horizontal_fov>
+                <image>
+                    <width>640</width>
+                    <height>480</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.05</near>
+                    <far>3</far>
+                </clip>
+            </camera>
+
+            <plugin name="depth_camera_controller" filename="libgazebo_ros_openni_kinect.so">
+                <baseline>0.2</baseline>
+                <alwaysOn>true</alwaysOn>
+                <updateRate>1.0</updateRate>
+                <cameraName>depth_kinect_camera</cameraName>
+                <imageTopicName>/depth_kinect_camera/color/image_raw</imageTopicName>
+                <cameraInfoTopicName>/depth_kinect_camera/color/camera_info</cameraInfoTopicName>
+                <depthImageTopicName>/depth_kinect_camera/depth/image_raw</depthImageTopicName>
+                <depthImageInfoTopicName>/depth_kinect_camera/depth/camera_info</depthImageInfoTopicName>
+                <pointCloudTopicName>/depth_kinect_camera/depth/points</pointCloudTopicName>
+                <frameName>link1</frameName>
+                <pointCloudCutoff>0.5</pointCloudCutoff>
+                <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+                <distortionK1>0.00000001</distortionK1>
+                <distortionK2>0.00000001</distortionK2>
+                <distortionK3>0.00000001</distortionK3>
+                <distortionT1>0.00000001</distortionT1>
+                <distortionT2>0.00000001</distortionT2>
+                <CxPrime>0</CxPrime>
+                <Cx>0</Cx>
+                <Cy>0</Cy>
+                <focalLength>0</focalLength>
+                <hackBaseline>0</hackBaseline>
+            </plugin>
+        </sensor>
+    </gazebo> -->
+
+    <!-- 3D lidar -->
+    <!-- <gazebo reference="link1">
+        <sensor type="ray" name="velodyne-VLP16">
+            <update_rate>10</update_rate>
+            <pose>0 0 0 0 0 0</pose>
+            <visualize>false</visualize>
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>512</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-3.1415926535897931</min_angle>
+                        <max_angle>3.1415926535897931</max_angle>
+                    </horizontal>
+                    <vertical>
+                        <samples>64</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-0.26</min_angle>
+                        <max_angle>0.26</max_angle>
+                    </vertical>
+                </scan>
+                <range>
+                    <min>0.9</min>
+                    <max>74</max>
+                    <resolution>0.03</resolution>
+                </range>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.0</stddev>
+                </noise>
+            </ray>
+            <plugin name="gazebo_ros_laser_controller" filename="libgazebo_ros_velodyne_laser.so">
+                <topicName>/velodyne_points</topicName>
+                <frameName>link1</frameName>
+                <min_range>0.9</min_range>
+                <max_range>130.0</max_range>
+                <gaussianNoise>0.008</gaussianNoise>
+            </plugin>
+        </sensor>
+    </gazebo> -->
+
+
+    <!-- 2D lidar laser scan -->
+    <!-- <gazebo reference="link1">
+        <sensor type="ray" name="head_hokuyo_sensor">
+            <update_rate>62</update_rate>
+            <visualize>false</visualize>
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>640</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-3.1415926535897931</min_angle>
+                        <max_angle>3.1415926535897931</max_angle>
+                    </horizontal>
+                </scan>
+                <range>
+                    <min>0.164</min>
+                    <max>12</max>
+                    <resolution>0.01</resolution>
+                </range>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.01</stddev>
+                </noise>
+            </ray>
+
+            <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+                <topicName>/turtlebot4_lite/lase_scan</topicName>
+                <frameName>link1</frameName>
+                <min_range>0.164</min_range>
+                <max_range>12</max_range>
+                <gaussianNoise>0.008</gaussianNoise>
+            </plugin>
+
+        </sensor>
+    </gazebo>  -->
+
+
+    <!-- imu sensor -->
+    <!-- <gazebo reference="imu_link">
+        <gravity>true</gravity>
+        <sensor name="imu_sensor" type="imu">
+            <always_on>true</always_on>
+            <update_rate>100</update_rate>
+            <visualize>true</visualize>
+            <topic>__default_topic__</topic>
+            <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+                <topicName>mobile_robot1/imu</topicName>
+                <bodyName>imu_link</bodyName>
+                <updateRateHZ>10.0</updateRateHZ>
+                <gaussianNoise>0.0</gaussianNoise>
+                <xyzOffset>0 0 0</xyzOffset>
+                <rpyOffset>0 0 0</rpyOffset>
+                <frameName>imu_link</frameName>
+                <initialOrientationAsReference>false</initialOrientationAsReference>
+            </plugin>
+            <pose>0 0 0 0 0 0</pose>
+        </sensor>
+    </gazebo> -->
+
+</robot>

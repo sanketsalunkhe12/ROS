@@ -1,0 +1,10 @@
+<launch>
+    <arg name="model" default="$(find robot_models_description)/urdf/turtlebot4_lite.urdf"/>
+    <param name="robot_description" textfile="$(find robot_models_description)/urdf/turtlebot4_lite.urdf"/>
+    <param name="use_gui" value="true"/>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robot_models_description)/rviz/urdf.rviz" required="true"/>
+    <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+</launch>
